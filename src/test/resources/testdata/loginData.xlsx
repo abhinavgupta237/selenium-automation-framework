@@ -1,0 +1,13 @@
+# Excel file placeholder
+# In a real implementation, this would be a binary Excel file
+# This is just a placeholder to show the structure
+
+# Sheet: LoginCredentials
+# Headers: username, password, shouldSucceed
+# Data:
+# tomsmith, SuperSecretPassword!, true
+# invaliduser, SuperSecretPassword!, false
+# tomsmith, wrongpassword, false
+# (empty), (empty), false
+# tomsmith, (empty), false
+# (empty), SuperSecretPassword!, false 

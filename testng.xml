@@ -5,15 +5,39 @@
         <listener class-name="com.qasmarts.framework.listeners.ExtentReportListener"/>
     </listeners>
     
-    <test name="Chrome Tests">
+    <!-- Test Groups -->
+    <test name="Basic UI Tests - Chrome">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.qasmarts.tests.LoginTest"/>
             <class name="com.qasmarts.tests.HomePageTest"/>
+            <class name="com.qasmarts.tests.CheckboxTest"/>
+            <class name="com.qasmarts.tests.DropdownTest"/>
+            <class name="com.qasmarts.tests.TableTest"/>
+            <class name="com.qasmarts.tests.IFrameTest"/>
         </classes>
     </test>
     
-    <test name="Firefox Tests">
+    <test name="Advanced UI Tests - Chrome">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.qasmarts.tests.DynamicLoadingTest"/>
+            <class name="com.qasmarts.tests.JavaScriptAlertsTest"/>
+            <class name="com.qasmarts.tests.DataDrivenLoginTest"/>
+            <class name="com.qasmarts.tests.FileUploadTest"/>
+            <class name="com.qasmarts.tests.FileDownloadTest"/>
+            <class name="com.qasmarts.tests.DragAndDropTest"/>
+            <class name="com.qasmarts.tests.WindowHandlingTest"/>
+        </classes>
+    </test>
+    
+    <test name="API Tests">
+        <classes>
+            <class name="com.qasmarts.tests.RestApiTest"/>
+        </classes>
+    </test>
+    
+    <test name="Basic UI Tests - Firefox">
         <parameter name="browser" value="firefox"/>
         <classes>
             <class name="com.qasmarts.tests.LoginTest"/>
@@ -21,11 +45,69 @@
         </classes>
     </test>
     
-    <test name="Edge Tests">
+    <test name="Basic UI Tests - Edge">
         <parameter name="browser" value="edge"/>
         <classes>
             <class name="com.qasmarts.tests.LoginTest"/>
             <class name="com.qasmarts.tests.HomePageTest"/>
+        </classes>
+    </test>
+    
+    <!-- Test Groups with Method Selection -->
+    <test name="Smoke Test Suite - Chrome">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.qasmarts.tests.LoginTest">
+                <methods>
+                    <include name="testSuccessfulLogin"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.HomePageTest">
+                <methods>
+                    <include name="testHomePageHeading"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.CheckboxTest">
+                <methods>
+                    <include name="testPageElements"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.DropdownTest">
+                <methods>
+                    <include name="testPageElements"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.FileUploadTest">
+                <methods>
+                    <include name="testFileUpload"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.FileDownloadTest">
+                <methods>
+                    <include name="testTextFileDownload"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.RestApiTest">
+                <methods>
+                    <include name="testGetUsers"/>
+                    <include name="testCreateUser"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.TableTest">
+                <methods>
+                    <include name="testPageElements"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.IFrameTest">
+                <methods>
+                    <include name="testPageElements"/>
+                </methods>
+            </class>
+            <class name="com.qasmarts.tests.WindowHandlingTest">
+                <methods>
+                    <include name="testPageElements"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite> 

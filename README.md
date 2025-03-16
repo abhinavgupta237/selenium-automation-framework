@@ -1,400 +1,460 @@
-# Automated Testing Framework for Web Applications
+# Selenium Automation Framework
 
-A robust and scalable test automation framework built with Selenium WebDriver, TestNG, and Maven.
+A comprehensive test automation framework built with Selenium WebDriver, TestNG, and REST Assured for both UI and API testing.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Selenium-4.15.0-green" alt="Selenium Version"/>
-  <img src="https://img.shields.io/badge/Java-11-orange" alt="Java Version"/>
-  <img src="https://img.shields.io/badge/TestNG-7.8.0-blue" alt="TestNG Version"/>
-  <img src="https://img.shields.io/badge/Maven-3.11.0-red" alt="Maven Version"/>
-</p>
+![Framework Overview](https://img.shields.io/badge/Framework-Selenium-green)
+![TestNG](https://img.shields.io/badge/TestNG-7.8.0-blue)
+![RestAssured](https://img.shields.io/badge/RestAssured-5.3.2-orange)
 
-## Overview
+## 📖 Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Framework Structure](#framework-structure)
+- [Test Cases](#test-cases)
+- [Setup and Execution](#setup-and-execution)
+- [Reporting](#reporting)
+- [Extending the Framework](#extending-the-framework)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Author](#author)
+- [License](#license)
 
-This framework is designed to provide a solid foundation for web application testing with the following features:
+## 🚀 Introduction
 
-- **Page Object Model (POM) Design Pattern**: For better maintainability and reusability of code
-- **Cross-Browser Testing**: Run tests on Chrome, Firefox, Edge, and Safari
-- **Parallel Execution**: Run tests in parallel to reduce execution time
-- **Reporting**: Generate detailed HTML reports with screenshots for failed tests
-- **Logging**: Comprehensive logging using Log4j2
-- **Data-Driven Testing**: Support for test data from Excel files
-- **CI/CD Integration**: Ready to integrate with CI/CD pipelines
+Selenium Automation Framework एक modern, robust और scalable test automation solution है, जो web applications की testing के लिए बनाया गया है। यह framework multiple browsers (Chrome, Firefox, Edge) पर tests execute कर सकता है और UI testing के साथ-साथ API testing capabilities भी provide करता है।
 
-## Framework Architecture
+Beginners के लिए: यह framework आपको आसानी से web applications के automated tests लिखने और run करने में help करता है। आप बिना complex code लिखे UI elements के साथ interact कर सकते हैं और API calls भी test कर सकते हैं।
 
-<p align="center">
-  <pre>
-  +-------------------+      +-------------------+      +-------------------+
-  |                   |      |                   |      |                   |
-  |    Test Classes   +----->+   Page Objects    +----->+   WebDriver API   |
-  |                   |      |                   |      |                   |
-  +--------+----------+      +-------------------+      +-------------------+
-           |
-           |
-  +--------v----------+      +-------------------+      +-------------------+
-  |                   |      |                   |      |                   |
-  |  TestNG Listeners +----->+  Extent Reports   +----->+   Test Reports    |
-  |                   |      |                   |      |                   |
-  +-------------------+      +-------------------+      +-------------------+
-  </pre>
-</p>
+## ✨ Features
 
-## Tech Stack
+हमारा framework कई powerful features offer करता है:
 
-- **Java**: Programming language
-- **Selenium WebDriver**: For browser automation
-- **TestNG**: Test framework for test organization and parallel execution
-- **Maven**: Build and dependency management
-- **WebDriverManager**: Automated driver management
-- **ExtentReports**: HTML reporting
-- **Log4j2**: Logging framework
-- **Apache POI**: For Excel operations
+- **Page Object Model (POM)** - यह design pattern code को organized और maintainable रखता है। हर web page का एक अलग class होता है जो उस page के elements और actions को encapsulate करता है।
 
-## Project Structure
+- **Data-driven Testing** - आप Excel files या TestNG DataProviders से test data read करके multiple test scenarios run कर सकते हैं, बिना code duplicate किए।
 
-```
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── qasmarts
-│   │   │           └── framework
-│   │   │               ├── BasePage.java
-│   │   │               ├── WebDriverFactory.java
-│   │   │               ├── config
-│   │   │               │   └── ConfigManager.java
-│   │   │               ├── listeners
-│   │   │               │   ├── TestListener.java
-│   │   │               │   └── ExtentReportListener.java
-│   │   │               ├── pages
-│   │   │               │   ├── LoginPage.java
-│   │   │               │   └── HomePage.java
-│   │   │               └── utils
-│   │   │                   ├── ExcelUtils.java
-│   │   │                   └── ScreenshotUtils.java
-│   │   └── resources
-│   │       ├── log4j2.xml
-│   │       └── config.properties
-│   └── test
-│       ├── java
-│       │   └── com
-│       │       └── qasmarts
-│       │           └── tests
-│       │               ├── BaseTest.java
-│       │               ├── LoginTest.java
-│       │               └── HomePageTest.java
-│       └── resources
-│           └── testdata
-│               └── testdata.xlsx
-├── testng.xml
-├── pom.xml
-└── README.md
-```
+- **Parallel Test Execution** - Tests को parallel run करके execution time को significantly reduce करें।
 
-## Features
+- **Cross-browser Testing** - Tests को multiple browsers (Chrome, Firefox, Edge) पर run करके compatibility ensure करें।
 
-### Page Object Model
+- **REST API Testing** - REST Assured library का use करके API testing capabilities।
 
-The framework uses the Page Object Model design pattern to create a clean and maintainable test structure. Each page in the application has a corresponding Page class that encapsulates page elements and actions.
+- **File Upload and Download Testing** - Files को upload और download करने की functionality test करें।
 
-**Example Page Object:**
+- **Extensive Reporting** - ExtentReports का use करके detailed और visually appealing test reports generate करें।
 
-```java
-public class LoginPage extends BasePage {
-    @FindBy(id = "username")
-    private WebElement usernameInput;
-    
-    @FindBy(id = "password")
-    private WebElement passwordInput;
-    
-    public LoginPage(WebDriver driver) {
-        super(driver);
-    }
-    
-    public HomePage login(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        return clickLoginButton();
-    }
-}
-```
+- **Screenshot Capture** - Test failure पर automatically screenshots capture करके debugging में help करें।
 
-### Cross-Browser Testing
+- **Logging** - Log4j2 का use करके detailed logging information capture करें।
 
-Tests can be executed on different browsers by configuring the `browser` parameter in the TestNG XML file:
+- **Configuration Management** - Properties files के through environment-specific configurations manage करें।
 
-```xml
-<test name="Chrome Tests">
-    <parameter name="browser" value="chrome"/>
-    <classes>
-        <class name="com.qasmarts.tests.LoginTest"/>
-    </classes>
-</test>
-```
+- **Custom TestNG Listeners** - Enhanced reporting और test management के लिए custom TestNG listeners।
 
-### Parallel Execution
-
-TestNG is configured to run tests in parallel to reduce execution time:
-
-```xml
-<suite name="Selenium Automation Framework Test Suite" parallel="tests" thread-count="3">
-```
-
-### Reporting
-
-The framework generates detailed HTML reports using ExtentReports. Screenshots are automatically captured for failed tests.
-
-Example report screenshot:
-```
-+-----------------------------------------------+
-|  Test Report - Selenium Automation Framework  |
-+-----------------------------------------------+
-| Test Status  | Test Name         | Duration   |
-+-----------------------------------------------+
-| ✅ PASS      | testSuccessfulLogin | 3.45s    |
-| ❌ FAIL      | testInvalidUsername | 2.89s    |
-| ✅ PASS      | testForgotPassword  | 1.23s    |
-+-----------------------------------------------+
-```
-
-### Logging
-
-Comprehensive logging is implemented using Log4j2 to track test execution and debug issues:
+## 🏗️ Framework Structure
 
 ```
-2023-06-15 10:15:32 [main] INFO  com.qasmarts.tests.LoginTest - Starting test: testSuccessfulLogin
-2023-06-15 10:15:33 [main] INFO  com.qasmarts.framework.BasePage - Navigating to URL: https://example.com/login
-2023-06-15 10:15:34 [main] INFO  com.qasmarts.framework.pages.LoginPage - Entering username: testuser
-2023-06-15 10:15:34 [main] INFO  com.qasmarts.framework.pages.LoginPage - Entering password: ****
-2023-06-15 10:15:35 [main] INFO  com.qasmarts.framework.pages.LoginPage - Clicking login button
-2023-06-15 10:15:36 [main] INFO  com.qasmarts.tests.LoginTest - Test passed: testSuccessfulLogin
+SeleniumAutomationFramework/
+├── src/
+│   ├── main/java/com/qasmarts/framework/
+│   │   ├── config/            - Configuration management classes
+│   │   │   ├── ConfigManager.java - Properties file reading and configuration
+│   │   │   └── DriverManager.java - WebDriver initialization and management
+│   │   ├── constants/         - Framework constants
+│   │   │   └── Constants.java - Common constants used across framework
+│   │   ├── exceptions/        - Custom exceptions
+│   │   │   └── FrameworkException.java - Framework-specific exceptions
+│   │   ├── listeners/         - TestNG listeners
+│   │   │   ├── TestListener.java - Handles test events like pass/fail
+│   │   │   └── ExtentReportListener.java - Creates extended reports
+│   │   ├── pages/             - Page objects for each page in the application
+│   │   │   ├── BasePage.java - Parent class with common methods
+│   │   │   ├── LoginPage.java - Login page functionality
+│   │   │   ├── HomePage.java - Home page functionality
+│   │   │   ├── CheckboxPage.java - Checkbox page functionality
+│   │   │   ├── DropdownPage.java - Dropdown functionality
+│   │   │   ├── DynamicLoadingPage.java - Dynamic content loading
+│   │   │   ├── JavaScriptAlertsPage.java - JS alert handling
+│   │   │   ├── FileUploadPage.java - File upload functionality
+│   │   │   ├── FileDownloadPage.java - File download functionality
+│   │   │   ├── IFramePage.java - iFrame handling
+│   │   │   ├── DragAndDropPage.java - Drag and drop functionality
+│   │   │   ├── WindowsPage.java - Multiple windows handling
+│   │   │   └── TablePage.java - Data table interactions
+│   │   └── utils/             - Utility classes
+│   │       ├── ExcelUtils.java - Excel file operations
+│   │       ├── ScreenshotUtils.java - Screenshot capture
+│   │       ├── WaitUtils.java - Explicit and fluent waits
+│   │       ├── ApiUtils.java - REST API operations
+│   │       └── JavaScriptUtils.java - JavaScript operations
+│   ├── test/java/com/qasmarts/tests/
+│   │   ├── BaseTest.java      - Parent test class with common setup
+│   │   ├── LoginTest.java     - Login functionality tests
+│   │   ├── HomePageTest.java  - Homepage tests
+│   │   ├── CheckboxTest.java  - Checkbox functionality tests
+│   │   ├── DropdownTest.java  - Dropdown functionality tests
+│   │   ├── DynamicLoadingTest.java - Loading tests
+│   │   ├── JavaScriptAlertsTest.java - Alert tests
+│   │   ├── FileUploadTest.java - Upload tests
+│   │   ├── FileDownloadTest.java - Download tests
+│   │   ├── DataDrivenLoginTest.java - Data-driven tests
+│   │   ├── IFrameTest.java - iFrame tests
+│   │   ├── DragAndDropTest.java - Drag and drop tests
+│   │   ├── WindowHandlingTest.java - Window handling tests
+│   │   ├── TableTest.java - Table data tests
+│   │   └── RestApiTest.java - API tests
+│   └── test/resources/
+│       ├── config/            - Configuration files
+│       │   ├── config.properties - Framework configuration
+│       │   └── log4j2.properties - Logging configuration
+│       └── testdata/          - Test data files
+│           └── loginData.xlsx - Test data for login tests
+├── testng.xml                 - TestNG configuration
+├── pom.xml                    - Maven dependencies
+├── GIT_INSTRUCTIONS.md        - Git instructions in Hinglish
+└── README.md                  - Project documentation
 ```
 
-### Data-Driven Testing
+## 🧪 Test Cases
 
-The framework supports data-driven testing using TestNG DataProvider and Apache POI for Excel data:
+हमारा framework विभिन्न प्रकार के test cases को support करता है:
 
-```java
-@DataProvider(name = "loginData")
-public Object[][] getLoginData() {
-    return ExcelUtils.getTestData("testdata.xlsx", "LoginData");
-}
+### 1. UI Tests
 
-@Test(dataProvider = "loginData")
-public void testLoginWithMultipleUsers(String username, String password, String expectedResult) {
-    // Test implementation
-}
-```
+UI tests web application के user interface को validate करते हैं:
 
-## Getting Started
+- **Login Tests (`LoginTest`)**: 
+  - यह verify करता है कि users valid credentials के साथ login कर सकते हैं
+  - Invalid credentials के case में error messages display होते हैं
+
+- **Home Page Tests (`HomePageTest`)**:
+  - Page elements properly display होते हैं
+  - Navigation links काम करते हैं
+
+- **Form Control Tests**:
+  - Checkboxes select/deselect हो सकते हैं (`CheckboxTest`)
+  - Dropdowns में options select हो सकते हैं (`DropdownTest`)
+
+- **Dynamic Content Tests (`DynamicLoadingTest`)**:
+  - Dynamic content properly load होता है
+  - Loading indicators correctly display होते हैं
+
+- **JavaScript Alert Tests (`JavaScriptAlertsTest`)**:
+  - Alerts, confirms और prompts handle किए जा सकते हैं
+  - User interactions correctly capture होते हैं
+
+- **File Operation Tests**:
+  - Files upload हो सकते हैं (`FileUploadTest`)
+  - Files download हो सकते हैं (`FileDownloadTest`)
+
+- **Advanced UI Interactions**:
+  - iFrames access किए जा सकते हैं (`IFrameTest`)
+  - Elements drag और drop किए जा सकते हैं (`DragAndDropTest`)
+  - Multiple windows handle किए जा सकते हैं (`WindowHandlingTest`)
+  - Table data access और validate किया जा सकता है (`TableTest`)
+
+### 2. API Tests
+
+API tests backend services को validate करते हैं:
+
+- **GET Requests**:
+  - API endpoints से data retrieve कर सकते हैं
+  - Response codes और data structure validate कर सकते हैं
+
+- **POST Requests**:
+  - Data create कर सकते हैं
+  - Valid और invalid payloads के behavior test कर सकते हैं
+
+- **PUT/PATCH Requests**:
+  - Existing data update कर सकते हैं
+  - Conditional updates validate कर सकते हैं
+
+- **DELETE Requests**:
+  - Resources delete कर सकते हैं
+  - Post-deletion state validate कर सकते हैं
+
+- **Authentication Tests**:
+  - Auth mechanisms (Basic, Token, OAuth) verify कर सकते हैं
+  - Secured endpoints accessible हैं auth के साथ
+
+### 3. Data-Driven Tests
+
+Same test को different inputs के साथ run करते हैं:
+
+- **Login with Multiple Credentials** (`DataDrivenLoginTest`):
+  - Excel file से login credentials read करके various login scenarios test करते हैं
+  - TestNG DataProvider का use करके multiple data sets के साथ tests run करते हैं
+
+## 🛠️ Setup and Execution
 
 ### Prerequisites
 
-- Java JDK 11 or higher
-- Maven 3.6 or higher
-- Browsers: Chrome, Firefox, Edge (as per your testing needs)
+शुरू करने से पहले, आपको निम्नलिखित tools install करने होंगे:
+
+- **Java JDK 11 या higher**
+  - Download: [Oracle JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) या [OpenJDK](https://adoptopenjdk.net/)
+  - Installation verify करें: `java -version`
+
+- **Maven 3.6.3 या higher**
+  - Download: [Maven](https://maven.apache.org/download.cgi)
+  - Installation verify करें: `mvn -version`
+
+- **Web Browsers**
+  - [Google Chrome](https://www.google.com/chrome/)
+  - [Mozilla Firefox](https://www.mozilla.org/firefox/)
+  - [Microsoft Edge](https://www.microsoft.com/edge)
+
+- **Integrated Development Environment (IDE)**
+  - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (Recommended)
+  - [Eclipse](https://www.eclipse.org/downloads/)
 
 ### Installation
 
-1. Clone the repository
-   ```
+Step-by-step instructions for setting up the framework:
+
+1. **Repository clone करें**:
+   ```bash
    git clone https://github.com/yourusername/selenium-automation-framework.git
    ```
 
-2. Navigate to the project directory
-   ```
+2. **Project directory में navigate करें**:
+   ```bash
    cd selenium-automation-framework
    ```
 
-3. Build the project:
-   ```
+3. **Dependencies install करें**:
+   ```bash
    mvn clean install -DskipTests
    ```
 
+### Configuration
+
+**config.properties** file में basic configuration settings update करें:
+
+```properties
+# src/test/resources/config/config.properties
+base.url=https://the-internet.herokuapp.com
+default.browser=chrome
+implicit.wait=10
+explicit.wait=20
+screenshot.path=test-output/screenshots
+headless.mode=false
+```
+
 ### Running Tests
 
-To run the tests:
+Different ways to run tests:
 
-```
-mvn test
-```
-
-To run specific test classes:
-
-```
-mvn test -Dtest=LoginTest
+**सभी tests run करें**:
+```bash
+mvn clean test
 ```
 
-To run with a specific TestNG XML file:
-
-```
-mvn test -DsuiteXmlFile=testng.xml
-```
-
-### Running Tests with Specific Browser
-
-```
-mvn test -Dbrowser=chrome
+**Specific test group run करें**:
+```bash
+mvn clean test -Dgroups=smoke
 ```
 
-Available browser options: `chrome`, `firefox`, `edge`, `safari`
+**Specific browser के साथ run करें**:
+```bash
+mvn clean test -Dbrowser=chrome
+```
 
-## Customization
+**Specific TestNG suite run करें**:
+```bash
+mvn clean test -DsuiteXmlFile=smoke_test.xml
+```
+
+**IDE से TestNG file run करें**:
+1. testng.xml file पर right click करें
+2. Run As > TestNG Suite select करें
+
+## 📊 Reporting
+
+Test execution के बाद, reports निम्न locations पर available होते हैं:
+
+- **TestNG Reports**: 
+  - Location: `target/surefire-reports`
+  - Format: HTML और XML reports
+  - Access: `target/surefire-reports/index.html` open करें web browser में
+
+- **Extent Reports**:
+  - Location: `test-output/ExtentReports`
+  - Format: Interactive HTML report with charts और graphs
+  - Features: Pass/fail statistics, execution time, screenshots
+  - Access: `test-output/ExtentReports/ExtentReport.html` open करें web browser में
+
+- **Screenshots**:
+  - Location: `test-output/screenshots`
+  - Capture timing: Test failures पर automatically
+  - Naming convention: `TestName_timestamp.png`
+
+- **Logs**:
+  - Location: `test-output/logs`
+  - Format: Detailed execution logs
+  - Level: INFO, ERROR, DEBUG
+
+## 🔍 Extending the Framework
 
 ### Adding New Page Objects
 
-1. Create a new class in the `com.qasmarts.framework.pages` package
-2. Extend the `BasePage` class
-3. Implement page-specific elements and methods
+New page के लिए Page Object add करने के steps:
+
+1. `src/main/java/com/qasmarts/framework/pages` में new class create करें
+2. `BasePage` class को extend करें
+3. Page elements को `@FindBy` annotations के साथ define करें
+4. Page-specific methods implement करें
 
 Example:
 ```java
-public class ProductPage extends BasePage {
-    @FindBy(id = "product-title")
-    private WebElement productTitle;
+package com.qasmarts.framework.pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+public class NewPage extends BasePage {
     
-    public ProductPage(WebDriver driver) {
+    @FindBy(id = "element-id")
+    private WebElement pageElement;
+    
+    public NewPage(WebDriver driver) {
         super(driver);
     }
     
-    public String getProductTitle() {
-        return getText(productTitle);
+    public void openPage(String baseUrl) {
+        driver.get(baseUrl + "/page-path");
+        waitForPageToLoad();
+    }
+    
+    public String getElementText() {
+        return pageElement.getText();
     }
 }
 ```
 
-### Adding New Tests
+### Adding New Test Cases
 
-1. Create a new class in the `com.qasmarts.tests` package
-2. Extend test base class or implement setup/teardown methods
-3. Create test methods with TestNG annotations
-4. Add the test class to the TestNG XML file
+New test cases add करने के steps:
+
+1. `src/test/java/com/qasmarts/tests` में new test class create करें
+2. `BaseTest` class को extend करें
+3. Page objects initialize करें `@BeforeMethod` में
+4. Test methods को `@Test` annotation के साथ add करें
 
 Example:
 ```java
-public class ProductTest extends BaseTest {
-    private ProductPage productPage;
+package com.qasmarts.tests;
+
+import com.qasmarts.framework.pages.NewPage;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class NewPageTest extends BaseTest {
+    
+    private NewPage newPage;
     
     @BeforeMethod
-    public void setUp() {
-        super.setUp();
-        productPage = new ProductPage(driver);
+    public void setUpPageObjects() {
+        newPage = new NewPage(driver);
+        newPage.openPage(getBaseUrl());
     }
     
-    @Test
-    public void testProductDetails() {
-        productPage.navigate("https://example.com/product/1");
-        Assert.assertEquals(productPage.getProductTitle(), "Expected Product Title");
+    @Test(description = "Verify element text on the new page")
+    public void testElementText() {
+        String text = newPage.getElementText();
+        Assert.assertEquals(text, "Expected Text", "Element text should match expected value");
     }
 }
 ```
 
-## CI/CD Integration
+### Adding New API Tests
 
-### GitHub Actions Integration
+API tests add करने के steps:
 
-Create a `.github/workflows/maven.yml` file:
+1. `ApiUtils` class का use करें requests send करने के लिए
+2. API responses को validate करने के लिए assertions add करें
 
-```yaml
-name: Java CI with Maven
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn clean test
-```
-
-### Jenkins Integration
-
-Create a `Jenkinsfile`:
-
-```
-pipeline {
-    agent any
+Example:
+```java
+@Test(description = "Verify API endpoint returns correct data")
+public void testApiEndpoint() {
+    // Send API request
+    Response response = apiUtils.sendGetRequest("/api/endpoint");
     
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn clean install -DskipTests'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-    }
+    // Validate response
+    Assert.assertEquals(response.getStatusCode(), 200, "Status code should be 200");
+    Assert.assertEquals(response.jsonPath().getString("name"), "Expected Name",
+            "Response should contain the correct name");
 }
 ```
 
-## Best Practices
+## 🔧 Troubleshooting
 
-1. **Use Page Object Model**: Keep all web element locators and page-specific methods in respective page classes
-2. **Implement Proper Waits**: Avoid using Thread.sleep(), use Explicit Waits instead
-3. **Handle Exceptions Properly**: Implement try-catch blocks where necessary
-4. **Add Descriptive Assertions**: Use descriptive messages in assertions to make test failures more informative
-5. **Maintain Test Independence**: Each test should be independent and not rely on other tests
-6. **Use Test Categories**: Group tests using TestNG groups for selective execution
-7. **Keep Tests Small and Focused**: Each test should verify a single functionality
-8. **Implement Screenshots for Failures**: Capture screenshots when tests fail for easier debugging
-9. **Use Proper Logging**: Log important steps and information during test execution
-10. **Maintain Clean Code**: Follow code formatting and style guidelines
+Common issues और उनके solutions:
 
-## Troubleshooting
+### WebDriver Initialization Failures
 
-### Common Issues
+**Issue**: Tests fails with error "Session not created" या "Driver not found"
 
-1. **WebDriver Initialization Failure**
-   - Verify the browser driver compatibility with the browser version
-   - Check if WebDriverManager is properly configured
+**Solutions**:
+- Browser version और WebDriver version compatible हैं verify करें
+- WebDriverManager latest version use कर रहा है check करें
+- Internet connection active है verify करें
+- Antivirus या firewall WebDriver को block तो नहीं कर रहा check करें
 
-2. **Element Not Found Exceptions**
-   - Check if the element locator is correct
-   - Implement proper waits before interacting with elements
-   - Verify if element is in an iframe or shadow DOM
+### Element Not Found Exceptions
 
-3. **Test Data Issues**
-   - Ensure test data files are in the correct location
-   - Verify data format and content
+**Issue**: Tests fail with "NoSuchElementException"
 
-### Logging and Debugging
+**Solutions**:
+- Element locators correct हैं verify करें
+- Explicit waits का use करें element visible होने का wait करने के लिए
+- Element iframe के अंदर तो नहीं है check करें
+- Page fully load हुआ है verify करें
+- Dynamic IDs का use हो रहा है तो different locator strategy try करें
 
-To enable verbose logging, modify the log level in `log4j2.xml`:
+### Data-Driven Test Issues
 
-```xml
-<Root level="debug">
-    <AppenderRef ref="Console" />
-    <AppenderRef ref="File" />
-</Root>
-```
+**Issue**: Data-driven tests नहीं चल रहे या incorrect data read कर रहे हैं
 
-## Author
+**Solutions**:
+- Excel file correct location पर है verify करें
+- Excel file format supported है check करें (XLS या XLSX)
+- DataProvider correct data type return कर रहा है verify करें
+- File permissions correct हैं check करें
 
-**Abhinav Gupta**  
-- Email: qasmarts@gmail.com
-- LinkedIn: [Abhinav Gupta](https://www.linkedin.com/in/your-profile)
-- GitHub: [YourGithubProfile](https://github.com/yourgithubprofile)
+### Test Execution Hangs
 
-## License
+**Issue**: Tests execute होने के बाद hang हो जाते हैं
 
-This project is licensed under the MIT License. 
+**Solutions**:
+- Resource leaks (unclosed browsers) को fix करें
+- Infinite loops या long waits को avoid करें
+- Proper test cleanup implement करें
+- Memory usage monitor करें large objects के liye
+
+## 👥 Contributing
+
+हमारे project में contribute करने के steps:
+
+1. Repository fork करें
+2. Feature branch create करें (`git checkout -b feature/amazing-feature`)
+3. Changes commit करें (`git commit -m 'Add some amazing feature'`)
+4. Branch push करें (`git push origin feature/amazing-feature`)
+5. Pull Request open करें
+
+Contribution guidelines:
+- Code style guidelines follow करें
+- Unit tests add करें new features के लिए
+- Documentation update करें
+- Pull request submit करने से पहले testing करें
+
+## 👨‍💻 Author
+
+**Abhinav Gupta**
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
